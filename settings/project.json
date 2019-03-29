@@ -14,6 +14,11 @@
     [
       false,
       false
+    ],
+    [
+      false,
+      false,
+      true
     ]
   ],
   "design-resolution-height": 640,
@@ -23,7 +28,8 @@
   "fit-width": false,
   "group-list": [
     "default",
-    "group1"
+    "group1",
+    "bullet"
   ],
   "simulator-orientation": false,
   "simulator-resolution": {

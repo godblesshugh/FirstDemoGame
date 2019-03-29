@@ -36,7 +36,7 @@ cc.Class({
     // update (dt) {},
 
     onLoad() {
-        cannonMoveBase = cc.find('Canvas/CannonLayout').width / 2;
+        cannonMoveBase = cc.find('Canvas/background').width / 2;
     },
 });
 
@@ -45,7 +45,7 @@ var MOVE_CANNON_TAG = 1;
 var moveAction;
 
 const moveCannon = (that) => {
-    var cannon = cc.find('Canvas/CannonLayout/cannon');
+    var cannon = cc.find('Canvas/background/cannon');
     var y = cannon.position.y;
     cannon.position = cc.v2(that.getLocation().x - cannonMoveBase, y);
     // FIXME: 还有一种方案，自己写 update 函数：https://blog.csdn.net/qq_42661974/article/details/86222179

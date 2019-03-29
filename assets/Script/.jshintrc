@@ -1,0 +1,19 @@
+{
+    "asi": false,
+    "curly": true,
+    "eqeqeq": true,
+    "immed": true,
+    "noarg": true,
+    "noempty": true,
+    "quotmark": "single",
+    "undef": false,
+    "strict": true,
+    "unused": true,
+    "eqnull": true,
+    "node": true,
+    "esversion": 6,
+    "globals": {
+        "Promise": true,
+        "cc": true
+    }
+}
