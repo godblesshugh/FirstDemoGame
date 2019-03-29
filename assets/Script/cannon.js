@@ -2,7 +2,7 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        defaultY: 12
+        defaultY: 12,
         // cannon: {
         //     default: null,
         //     type: cc.Sprite,
@@ -24,24 +24,29 @@ cc.Class({
         // },
     },
 
-    onLoad () {
-        var that = this;
-        this.node.on('mousedown', function(event) {
-            moveCannon(that, 100);
-        });
-    },
-
     start() {
-        // moveCannon(this, 100);
+        this.node.on(cc.Node.EventType.TOUCH_START, function (event) {
+            moveCannon(event);
+        }, this);
+        this.node.on(cc.Node.EventType.TOUCH_MOVE, function (event) {
+            moveCannon(event);
+        }, this);
     },
 
     // update (dt) {},
+
+    onLoad() {
+        cannonMoveBase = cc.find('Canvas/CannonLayout').width / 2;
+    },
 });
 
-const moveCannon = (that, x) => {
+var cannonMoveBase = 375;
+var MOVE_CANNON_TAG = 1;
+var moveAction;
+
+const moveCannon = (that) => {
     var cannon = cc.find('Canvas/CannonLayout/cannon');
-    console.log(cannon);
-    console.log(cannon.position);
-    var action = cc.moveTo(0.5, cc.v2(100, 100));
-    cannon.runAction(action);
+    var y = cannon.position.y;
+    cannon.position = cc.v2(that.getLocation().x - cannonMoveBase, y);
+    // FIXME: 还有一种方案，自己写 update 函数：https://blog.csdn.net/qq_42661974/article/details/86222179
 };
