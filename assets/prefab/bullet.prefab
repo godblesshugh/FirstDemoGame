@@ -25,10 +25,13 @@
       },
       {
         "__id__": 3
+      },
+      {
+        "__id__": 4
       }
     ],
     "_prefab": {
-      "__id__": 4
+      "__id__": 5
     },
     "_opacity": 255,
     "_color": {
@@ -71,7 +74,7 @@
     "_skewY": 0,
     "_zIndex": 0,
     "_is3DNode": false,
-    "groupIndex": 0,
+    "groupIndex": 2,
     "_id": ""
   },
   {
@@ -100,6 +103,19 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
+    "_id": ""
+  },
+  {
+    "__type__": "c1c61pgrrRBGpiNdxtUtNzC",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "xSpeed": "0",
+    "ySpeed": "2000",
+    "hpDrop": "1",
     "_id": ""
   },
   {

@@ -1,28 +1,9 @@
+'use strict';
+
 cc.Class({
     extends: cc.Component,
 
-    properties: {
-        defaultY: 12,
-        // cannon: {
-        //     default: null,
-        //     type: cc.Sprite,
-        // }
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
-    },
+    properties: {},
 
     start() {
         this.node.on(cc.Node.EventType.TOUCH_START, function (event) {
