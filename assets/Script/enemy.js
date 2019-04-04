@@ -67,6 +67,8 @@ cc.Class({
                 {
                     if (selfCollider.body.linearVelocity.y < 700) {
                         selfCollider.body.applyLinearImpulse(cc.v2(0, 300), selfCollider.body.getWorldCenter(), true);
+                    } else {
+                        selfCollider.body.applyLinearImpulse(cc.v2(0, 100), selfCollider.body.getWorldCenter(), true);
                     }
                     // 撞到了地面
                     break;
