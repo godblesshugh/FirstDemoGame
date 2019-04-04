@@ -7,4 +7,5 @@ var userInfo = {
 
 module.exports = {
     userInfo: userInfo,
+    existEnemy1: 0,
 };

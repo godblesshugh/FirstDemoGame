@@ -31,6 +31,16 @@ cc.Class({
     // update (dt) {},
 
     onLoad() {
+        cc.director.getPhysicsManager().enabled = true;
+        this.enabledContactListener = true; // 刚体的碰撞检测
+        // cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
+        //     cc.PhysicsManager.DrawBits.e_pairBit |
+        //     cc.PhysicsManager.DrawBits.e_centerOfMassBit |
+        //     cc.PhysicsManager.DrawBits.e_jointBit |
+        //     cc.PhysicsManager.DrawBits.e_shapeBit;
+
+        var area = cc.find('Canvas/background');
+        common.init(area.width, area.height);
         this.eState = common.GameState.start;
         this.cannon.startAction();
         this.bulletGroup.startAction();

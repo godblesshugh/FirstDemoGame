@@ -9,17 +9,24 @@
   "collision-matrix": [
     [
       true,
-      true
-    ],
-    [
-      true,
-      false,
-      true
+      false
     ],
     [
       false,
+      false,
       true,
       true
+    ],
+    [
+      false,
+      true,
+      true
+    ],
+    [
+      false,
+      true,
+      false,
+      false
     ]
   ],
   "design-resolution-height": 640,
@@ -30,7 +37,8 @@
   "group-list": [
     "default",
     "enemy",
-    "bullet"
+    "bullet",
+    "wall"
   ],
   "simulator-orientation": false,
   "simulator-resolution": {
@@ -38,5 +46,6 @@
     "width": 960
   },
   "use-customize-simulator": false,
-  "use-project-simulator-setting": false
+  "use-project-simulator-setting": false,
+  "start-scene": "current"
 }

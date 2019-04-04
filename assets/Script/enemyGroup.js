@@ -1,6 +1,7 @@
 'use strict';
 
 var common = require('./common');
+var Global = require('./Global');
 
 //敌机组
 var enemyG = cc.Class({
@@ -42,17 +43,22 @@ cc.Class({
     },
     getNewEnemy: function (enemyInfo) {
         var objName = enemyInfo.name;
+        if (Global.existEnemy1 > 5) {
+            return;
+        }
         var newNode = common.PopPool(this, objName, enemyInfo.prefab, this.node);
+        Global.existEnemy1++;
         var newV2 = this.getNewEnemyPosition(newNode);
         newNode.setPosition(newV2);
         newNode.getComponent('enemy').init();
     },
     getNewEnemyPosition: function (newNode) {
-        var randx = Math.random() > 0.5 ? this.node.parent.width / 2 : -this.node.parent.width / 2 + newNode.width / 2;
+        var randx = Math.random() > 0.5 ? this.node.parent.width / 2 - newNode.width / 2 - 10 : -this.node.parent.width / 2 + newNode.width / 2 + 10;
         var randy = this.node.parent.height / 2 - newNode.height / 2;
         return cc.v2(randx, randy);
     },
     enemyDestroy: function (nodeInfo) {
         common.PushPool(this, nodeInfo);
-    }
+        Global.existEnemy1--;
+    },
 });

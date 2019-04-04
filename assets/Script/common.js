@@ -1,5 +1,13 @@
 'use strict';
 
+var areaWidth = 0;
+var areaHeight = 0;
+
+const init = (_areaWidth, _areaHeight) => {
+    areaWidth = areaWidth;
+    _areaHeight = _areaHeight;
+};
+
 const GameState = {
     none: 0,
     start: 1,
@@ -23,7 +31,7 @@ const InitObjPool = (that, objInfo) => {
 };
 
 const BatchInitObjPool = (that, objArray) => {
-    for(var i = 0; i< objArray.length; i++ ){
+    for (var i = 0; i < objArray.length; i++) {
         InitObjPool(that, objArray[i]);
     }
 };
@@ -71,6 +79,7 @@ const TimeFmt = (time, fmt) => { //author: meizz
 };
 
 module.exports = {
+    init: init,
     GameState: GameState,
     GetObjPoolName: GetObjPoolName,
     InitObjPool: InitObjPool,

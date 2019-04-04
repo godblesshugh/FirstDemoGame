@@ -2,6 +2,7 @@
 
 var common = require('./common');
 var screenHeightLimit = 0;
+var screenWidthLimit = 0;
 var xSpeed = 10;
 
 cc.Class({
@@ -27,19 +28,12 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        cc.director.getPhysicsManager().enabled = true;
-        var collisionManager = cc.director.getCollisionManager();
-        collisionManager.enabled = true;
-        collisionManager.enabledDebugDraw = true; // FIXME: 测试的时候，先绘制出来碰撞边界
         screenHeightLimit = cc.find('Canvas').height / 2; // 正负
+        screenWidthLimit = cc.find('Canvas').width / 2; // 正负
         this.enemyGroup = this.node.parent.getComponent('enemyGroup');
     },
 
-    onCollisionEnter: function (other, self) {
-        this.enemyGroup.enemyDestroy(self.node);
-    },
-
-    init: function (hp, level) {
+    init: function (hp, level, position) {
         if (this.node.group !== 'enemy') {
             this.node.group = 'enemy';
         }
@@ -55,11 +49,43 @@ cc.Class({
         if (this.enemyGroup.eState !== common.GameState.start) {
             return;
         }
-        // this.node.x += dt * xSpeed;
-        // this.node.x += dt * this.xSpeed;
-        // this.node.y += dt * this.ySpeed;
-        // if (this.node.y > screenHeightLimit) {
-        //     this.enemyGroup.enemyDestroy(this.node);
-        // }
+        // node.getComponent(cc.RigidBody).getWorldCenter()
+        var rigidbody = this.node.getComponent(cc.RigidBody);
+        if (this.node.position.x > screenWidthLimit || this.node.position.x < -screenWidthLimit) {
+            this.enemyGroup.enemyDestroy(this.node);
+        }
+    },
+
+    // 只在两个碰撞体开始接触时被调用一次
+    onBeginContact: function (contact, selfCollider, otherCollider) {
+    },
+
+    // 只在两个碰撞体结束接触时被调用一次
+    onEndContact: function (contact, selfCollider, otherCollider) {
+        switch (otherCollider.node.name) {
+            case 'ground':
+                {
+                    if (selfCollider.body.linearVelocity.y < 700) {
+                        selfCollider.body.applyLinearImpulse(cc.v2(0, 300), selfCollider.body.getWorldCenter(), true);
+                    }
+                    // 撞到了地面
+                    break;
+                }
+            case 'leftWall':
+                {
+                    // 撞到了左墙
+                    break;
+                }
+            case 'rightWall':
+                {
+                    // 撞到了右墙
+                    break;
+                }
+            case 'bullet':
+                {
+                    // 被子弹打中了
+                    break;
+                }
+        }
     },
 });
