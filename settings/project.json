@@ -9,15 +9,16 @@
   "collision-matrix": [
     [
       true,
-      false
+      true
+    ],
+    [
+      true,
+      false,
+      true
     ],
     [
       false,
-      false
-    ],
-    [
-      false,
-      false,
+      true,
       true
     ]
   ],
@@ -28,7 +29,7 @@
   "fit-width": false,
   "group-list": [
     "default",
-    "group1",
+    "enemy",
     "bullet"
   ],
   "simulator-orientation": false,
@@ -37,6 +38,5 @@
     "width": 960
   },
   "use-customize-simulator": false,
-  "use-project-simulator-setting": false,
-  "start-scene": "current"
+  "use-project-simulator-setting": false
 }

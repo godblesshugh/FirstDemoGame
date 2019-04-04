@@ -5,7 +5,7 @@ cc.Class({
 
     properties: {},
 
-    start() {
+    startAction() {
         this.node.on(cc.Node.EventType.TOUCH_START, function (event) {
             moveCannon(event);
         }, this);
@@ -17,7 +17,7 @@ cc.Class({
     // update (dt) {},
 
     onLoad() {
-        cannonMoveBase = cc.find('Canvas/background').width / 2;
+        cannonMoveBase = this.node.parent.width / 2;
     },
 });
 

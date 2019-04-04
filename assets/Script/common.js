@@ -22,6 +22,12 @@ const InitObjPool = (that, objInfo) => {
     }
 };
 
+const BatchInitObjPool = (that, objArray) => {
+    for(var i = 0; i< objArray.length; i++ ){
+        InitObjPool(that, objArray[i]);
+    }
+};
+
 // pop 节点（从节点池中获取或是创建）
 const PopPool = (that, name, prefab, nodeParent) => {
     var poolName = GetObjPoolName(name);
@@ -71,4 +77,5 @@ module.exports = {
     PopPool: PopPool,
     PushPool: PushPool,
     TimeFmt: TimeFmt,
+    BatchInitObjPool: BatchInitObjPool,
 };

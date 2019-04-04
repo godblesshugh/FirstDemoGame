@@ -3,16 +3,22 @@
 var common = require('./common');
 var screenHeightLimit = 0;
 
-// // FIXME: dt 每隔7次都会变换一下，所以取一个相对较短的时间来平衡一下
-// var dt = 0.015;
-
 cc.Class({
     extends: cc.Component,
 
     properties: {
-        xSpeed: cc.Integer,
-        ySpeed: cc.Integer,
-        hpDrop: cc.Integer,
+        xSpeed: {
+            default: 0,
+            type: cc.Integer
+        },
+        ySpeed: {
+            default: 0,
+            type: cc.Integer
+        },
+        hpDrop: {
+            default: 0,
+            type: cc.Integer
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
