@@ -1,7 +1,6 @@
 'use strict';
 
 var common = require('./common');
-var Global = require('./Global');
 
 //敌机组
 var enemyG = cc.Class({
@@ -48,8 +47,6 @@ cc.Class({
         }
         var newNode = common.PopPool(this, objName, enemyInfo.prefab, this.node);
         Global.existEnemy1++;
-        var newV2 = this.getNewEnemyPosition(newNode);
-        newNode.setPosition(newV2);
         newNode.getComponent('enemy').init();
     },
     getNewEnemyPosition: function (newNode) {

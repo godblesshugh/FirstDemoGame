@@ -78,6 +78,17 @@ const TimeFmt = (time, fmt) => { //author: meizz
     return fmt;
 };
 
+// 重置六边形状态（被消除之后使用）
+const ResetEnemy = (node) => {
+    var rigidbody = node.getComponent(cc.RigidBody);
+    rigidbody.linearVelocity = cc.v2(0, 0);
+    rigidbody.angularVelocity = 0;
+    rigidbody.gravityScale = 0;
+    rigidbody.angularDamping = 0;
+    rigidbody.fixedRotation = true;
+    return node;
+};
+
 module.exports = {
     init: init,
     GameState: GameState,
@@ -87,4 +98,5 @@ module.exports = {
     PushPool: PushPool,
     TimeFmt: TimeFmt,
     BatchInitObjPool: BatchInitObjPool,
+    ResetEnemy: ResetEnemy,
 };

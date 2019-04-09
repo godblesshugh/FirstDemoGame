@@ -1,14 +1,15 @@
 'use strict';
 
 var common = require('./common');
-var screenHeightLimit = 0;
-var screenWidthLimit = 0;
-var xSpeed = 10;
 
 cc.Class({
     extends: cc.Component,
 
     properties: {
+        sprArray: {
+            default: [],
+            type: [cc.SpriteFrame]
+        },
         level: {
             default: 1,
             type: cc.Integer,
@@ -28,47 +29,55 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        screenHeightLimit = cc.find('Canvas').height / 2; // 正负
-        screenWidthLimit = cc.find('Canvas').width / 2; // 正负
         this.enemyGroup = this.node.parent.getComponent('enemyGroup');
     },
 
-    init: function (hp, level, position) {
+    init: function (hp, level) {
         if (this.node.group !== 'enemy') {
             this.node.group = 'enemy';
         }
+        this.hitCount = 0;
         this.hp = hp || this.hp;
         this.level = level || this.level;
+        common.ResetEnemy(this.node);
+        // init
+        this.node.getComponent(cc.Sprite).SpriteFrame = this.sprArray[3];
+        this.hp = 110;
+        this.node.getComponentInChildren(cc.Label).string = 110;
+        if (Math.random() > 0.5) {
+            leftEnter(this);
+        } else {
+            rightEnter(this);
+        }
     },
 
-    start() {
-
-    },
+    start() {},
 
     update(dt) {
         if (this.enemyGroup.eState !== common.GameState.start) {
             return;
         }
-        // node.getComponent(cc.RigidBody).getWorldCenter()
         var rigidbody = this.node.getComponent(cc.RigidBody);
-        if (this.node.position.x > screenWidthLimit || this.node.position.x < -screenWidthLimit) {
-            this.enemyGroup.enemyDestroy(this.node);
-        }
-    },
-
-    // 只在两个碰撞体开始接触时被调用一次
-    onBeginContact: function (contact, selfCollider, otherCollider) {
     },
 
     // 只在两个碰撞体结束接触时被调用一次
     onEndContact: function (contact, selfCollider, otherCollider) {
+        this.hp -= 5;
+        if (this.hp < 0) {
+
+            this.enemyGroup.enemyDestroy(this.node);
+        }
+        var label = this.node.getComponentInChildren(cc.Label);
+        label.string = this.hp;
+        this.hitCount++;
+        if (this.hitCount % 5 === 0) {
+            switchEnemy(this);
+        }
         switch (otherCollider.node.name) {
             case 'ground':
                 {
-                    if (selfCollider.body.linearVelocity.y < 700) {
-                        selfCollider.body.applyLinearImpulse(cc.v2(0, 300), selfCollider.body.getWorldCenter(), true);
-                    } else {
-                        selfCollider.body.applyLinearImpulse(cc.v2(0, 100), selfCollider.body.getWorldCenter(), true);
+                    if (selfCollider.body.linearVelocity.y < 500) {
+                        selfCollider.body.applyLinearImpulse(cc.v2(0, 2000), selfCollider.body.getWorldCenter(), true);
                     }
                     // 撞到了地面
                     break;
@@ -91,3 +100,50 @@ cc.Class({
         }
     },
 });
+
+var switchEnemy = (that) => {
+    var sprite = that.node.getComponent(cc.Sprite);
+    switch (sprite.spriteFrame.name) {
+        case 'hexagon_green':
+            sprite.spriteFrame = that.sprArray[3];
+            return true;
+        case 'hexagon_red':
+            sprite.spriteFrame = that.sprArray[2];
+            return true;
+        case 'hexagon_orange':
+            sprite.spriteFrame = that.sprArray[1];
+            return true;
+        case 'hexagon_blue':
+            sprite.spriteFrame = that.sprArray[0];
+            return true;
+    }
+    return false;
+};
+
+var leftEnter = (that) => {
+    var rigidbody = that.node.getComponent(cc.RigidBody);
+    var x = -(cc.view.getVisibleSize().width / 2 + that.node.width / 2) - 5;
+    var y = (cc.view.getVisibleSize().height / 2 - that.node.height / 2) - 10;
+    that.node.setPosition(cc.v2(x, y));
+    var enterAction = cc.sequence(cc.moveBy(2, that.node.width + 50, 0), cc.callFunc(function () {
+        rigidbody.fixedRotation = false;
+        rigidbody.angularVelocity = 50;
+        rigidbody.gravityScale = 1;
+        rigidbody.angularDamping = 0.8;
+    }, that));
+    that.node.runAction(enterAction);
+};
+
+var rightEnter = (that) => {
+    var rigidbody = that.node.getComponent(cc.RigidBody);
+    var x = (cc.view.getVisibleSize().width / 2 + that.node.width / 2) + 5;
+    var y = (cc.view.getVisibleSize().height / 2 - that.node.height / 2) - 10;
+    that.node.setPosition(cc.v2(x, y));
+    var enterAction = cc.sequence(cc.moveBy(2, -(that.node.width + 50), 0), cc.callFunc(function () {
+        rigidbody.fixedRotation = false;
+        rigidbody.angularVelocity = -20;
+        rigidbody.gravityScale = 1;
+        rigidbody.angularDamping = 0.8;
+    }, that));
+    that.node.runAction(enterAction);
+};

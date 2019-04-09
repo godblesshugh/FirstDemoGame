@@ -5,7 +5,7 @@ var userInfo = {
     bulletHP: 1, // 根据这个参数，来决定每一颗子弹造成多少伤害
 };
 
-module.exports = {
+window.Global = {
     userInfo: userInfo,
     existEnemy1: 0,
 };

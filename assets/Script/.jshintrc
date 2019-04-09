@@ -14,6 +14,8 @@
     "esversion": 6,
     "globals": {
         "Promise": true,
-        "cc": true
+        "cc": true,
+        "Global": true,
+        "window": true
     }
 }

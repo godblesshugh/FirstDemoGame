@@ -20,7 +20,7 @@
         "__id__": 33
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 0,
     "_components": [],
     "_prefab": null,
@@ -44,9 +44,9 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.45214111694152925,
-      "y": 0.45214111694152925,
-      "z": 0.45214111694152925
+      "x": 0.4518248688155922,
+      "y": 0.4518248688155922,
+      "z": 0.4518248688155922
     },
     "_quat": {
       "__type__": "cc.Quat",
@@ -77,7 +77,7 @@
       }
     ],
     "_active": true,
-    "_level": 0,
+    "_level": 1,
     "_components": [
       {
         "__id__": 31
@@ -879,7 +879,7 @@
     "_alignFlags": 8,
     "_left": 0,
     "_right": 0,
-    "_top": 0,
+    "_top": 200,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
@@ -903,7 +903,7 @@
     "_enabled": true,
     "_type": 0,
     "_allowSleep": false,
-    "_gravityScale": 1,
+    "_gravityScale": 0,
     "_linearDamping": 0,
     "_angularDamping": 0,
     "_linearVelocity": {
@@ -928,7 +928,7 @@
     "tag": 1,
     "_density": 1,
     "_sensor": false,
-    "_friction": 0.2,
+    "_friction": 0,
     "_restitution": 0,
     "body": null,
     "_offset": {
