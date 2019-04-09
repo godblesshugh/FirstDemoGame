@@ -55,6 +55,7 @@ cc.Class({
         return cc.v2(randx, randy);
     },
     enemyDestroy: function (nodeInfo) {
+        //FIXME: 炮台在边上的时候，六边形还没有出现就直接打掉了，好像会引起问题，没有调用这个 Global.existEnemy1-- 的逻辑
         Global.existEnemy1 = Global.existEnemy1 < 1 ? 0 : Global.existEnemy1 - 1;
         common.PushPool(this, nodeInfo);
     },
