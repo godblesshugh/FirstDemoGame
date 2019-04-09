@@ -55,7 +55,7 @@ cc.Class({
         return cc.v2(randx, randy);
     },
     enemyDestroy: function (nodeInfo) {
+        Global.existEnemy1 = Global.existEnemy1 < 1 ? 0 : Global.existEnemy1 - 1;
         common.PushPool(this, nodeInfo);
-        Global.existEnemy1--;
     },
 });

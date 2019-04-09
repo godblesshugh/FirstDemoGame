@@ -68,6 +68,8 @@ cc.Class({
             var newV2 = this.getBulletPosition(bulletInfo.position[i]);
             newNode.setPosition(newV2);
             newNode.getComponent('bullet').bulletGroup = this;
+            var rigidbody = newNode.getComponent(cc.RigidBody);
+            rigidbody.linearVelocity = cc.v2(0, 1500);
         }
     },
 

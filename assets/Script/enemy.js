@@ -60,19 +60,25 @@ cc.Class({
         var rigidbody = this.node.getComponent(cc.RigidBody);
     },
 
+    // 只在两个碰撞体开始接触时被调用一次
+    onBeginContact: function (contact, selfCollider, otherCollider) {
+        if (otherCollider.node.name === 'bullet') {
+            // 被子弹打中了
+            this.hp -= otherCollider.node.getComponent('bullet').hp;
+            if (this.hp < 0) {
+                this.enemyGroup.enemyDestroy(this.node);
+            }
+            var label = this.node.getComponentInChildren(cc.Label);
+            label.string = this.hp;
+            this.hitCount++;
+            if (this.hitCount % 5 === 0) {
+                switchEnemy(this);
+            }
+        }
+    },
+
     // 只在两个碰撞体结束接触时被调用一次
     onEndContact: function (contact, selfCollider, otherCollider) {
-        this.hp -= 5;
-        if (this.hp < 0) {
-
-            this.enemyGroup.enemyDestroy(this.node);
-        }
-        var label = this.node.getComponentInChildren(cc.Label);
-        label.string = this.hp;
-        this.hitCount++;
-        if (this.hitCount % 5 === 0) {
-            switchEnemy(this);
-        }
         switch (otherCollider.node.name) {
             case 'ground':
                 {
@@ -90,11 +96,6 @@ cc.Class({
             case 'rightWall':
                 {
                     // 撞到了右墙
-                    break;
-                }
-            case 'bullet':
-                {
-                    // 被子弹打中了
                     break;
                 }
         }
