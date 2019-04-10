@@ -38,6 +38,9 @@ const BatchInitObjPool = (that, objArray) => {
 
 // pop 节点（从节点池中获取或是创建）
 const PopPool = (that, name, prefab, nodeParent) => {
+    if (name.startsWith('enemy')) {
+        Global.existEnemy++;
+    }
     var poolName = GetObjPoolName(name);
     var pool = that[poolName];
     var node;
@@ -52,6 +55,13 @@ const PopPool = (that, name, prefab, nodeParent) => {
 
 // push 节点
 const PushPool = (that, nodeInfo) => {
+    if (nodeInfo.name.startsWith('enemy')) {
+        //FIXME: 炮台在边上的时候，六边形还没有出现就直接打掉了，好像会引起问题，没有调用这个 Global.existEnemy1-- 的逻辑
+        Global.existEnemy--;
+        if (Global.existEnemy < 0) {
+            Global.existEnemy = 0;
+        }
+    }
     var poolName = GetObjPoolName(nodeInfo.name);
     that[poolName].put(nodeInfo);
 };

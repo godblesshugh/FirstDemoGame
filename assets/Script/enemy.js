@@ -49,6 +49,9 @@ cc.Class({
         } else {
             rightEnter(this);
         }
+        var rigidbody = this.node.getComponent(cc.RigidBody);
+        var mass = rigidbody.getMass();
+        this.weight = Math.ceil(mass / 10);
     },
 
     start() {},
@@ -57,7 +60,6 @@ cc.Class({
         if (this.enemyGroup.eState !== common.GameState.start) {
             return;
         }
-        var rigidbody = this.node.getComponent(cc.RigidBody);
     },
 
     // 只在两个碰撞体开始接触时被调用一次
@@ -83,7 +85,7 @@ cc.Class({
             case 'ground':
                 {
                     if (selfCollider.body.linearVelocity.y < 500) {
-                        selfCollider.body.applyLinearImpulse(cc.v2(0, 2000), selfCollider.body.getWorldCenter(), true);
+                        selfCollider.body.applyLinearImpulse(cc.v2(200 * this.weight, 2000 * this.weight), selfCollider.body.getWorldCenter(), true);
                     }
                     // 撞到了地面
                     break;
@@ -126,11 +128,12 @@ var leftEnter = (that) => {
     var x = -(cc.view.getVisibleSize().width / 2 + that.node.width / 2) - 5;
     var y = (cc.view.getVisibleSize().height / 2 - that.node.height / 2) - 10;
     that.node.setPosition(cc.v2(x, y));
-    var enterAction = cc.sequence(cc.moveBy(2, that.node.width + 50, 0), cc.callFunc(function () {
+    var enterAction = cc.sequence(cc.moveBy(2, that.node.width * 1.5, 0), cc.callFunc(function () {
         rigidbody.fixedRotation = false;
         rigidbody.angularVelocity = 50;
         rigidbody.gravityScale = 1;
         rigidbody.angularDamping = 0.8;
+        rigidbody.applyLinearImpulse(cc.v2(500 * this.weight, 0), rigidbody.getWorldCenter(), true);
     }, that));
     that.node.runAction(enterAction);
 };
@@ -140,11 +143,12 @@ var rightEnter = (that) => {
     var x = (cc.view.getVisibleSize().width / 2 + that.node.width / 2) + 5;
     var y = (cc.view.getVisibleSize().height / 2 - that.node.height / 2) - 10;
     that.node.setPosition(cc.v2(x, y));
-    var enterAction = cc.sequence(cc.moveBy(2, -(that.node.width + 50), 0), cc.callFunc(function () {
+    var enterAction = cc.sequence(cc.moveBy(2, -(that.node.width * 1.5), 0), cc.callFunc(function () {
         rigidbody.fixedRotation = false;
         rigidbody.angularVelocity = -20;
         rigidbody.gravityScale = 1;
         rigidbody.angularDamping = 0.8;
+        rigidbody.applyLinearImpulse(cc.v2(-500 * this.weight, 0), rigidbody.getWorldCenter(), true);
     }, that));
     that.node.runAction(enterAction);
 };

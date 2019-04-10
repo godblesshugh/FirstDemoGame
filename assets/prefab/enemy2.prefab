@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "enemy1",
+    "_name": "enemy2",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -50,8 +50,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 116,
-      "height": 102
+      "width": 174,
+      "height": 153
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -112,8 +112,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 50.05,
-      "height": 30
+      "width": 41.71,
+      "height": 25
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -161,8 +161,8 @@
     "_useOriginalSize": false,
     "_string": "123",
     "_N$string": "123",
-    "_fontSize": 30,
-    "_lineHeight": 30,
+    "_fontSize": 25,
+    "_lineHeight": 25,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -179,7 +179,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "0d96e189-7e13-4aff-91f8-850ce7ef6a08"
+      "__uuid__": "1e311996-cbc9-400a-8165-3dc315f91fbe"
     },
     "fileId": "b4UHdXYBxMxau5RFxMFNki",
     "sync": false
@@ -222,7 +222,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "b805562a-8c5c-4116-9732-a278997f8bf4"
+      "__uuid__": "bd177232-4035-4ecc-a11f-78bbe9b49e84"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -285,32 +285,32 @@
     "points": [
       {
         "__type__": "cc.Vec2",
-        "x": -29,
-        "y": 51.0954986
+        "x": -43.5,
+        "y": 75.3442098
       },
       {
         "__type__": "cc.Vec2",
-        "x": 29,
-        "y": 51.0954986
+        "x": 43.5,
+        "y": 75.3442098
       },
       {
         "__type__": "cc.Vec2",
-        "x": 58,
+        "x": 87,
         "y": 0
       },
       {
         "__type__": "cc.Vec2",
-        "x": 29,
-        "y": -51.0954986
+        "x": 43.5,
+        "y": -75.3442098
       },
       {
         "__type__": "cc.Vec2",
-        "x": -29,
-        "y": -51.0954986
+        "x": -43.5,
+        "y": -75.3442098
       },
       {
         "__type__": "cc.Vec2",
-        "x": -58,
+        "x": -87,
         "y": 0
       }
     ],
@@ -322,7 +322,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "0d96e189-7e13-4aff-91f8-850ce7ef6a08"
+      "__uuid__": "1e311996-cbc9-400a-8165-3dc315f91fbe"
     },
     "fileId": "4aV8LVJE9JMJV7jibMW7Zn",
     "sync": false

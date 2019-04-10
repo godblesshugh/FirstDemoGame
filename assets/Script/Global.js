@@ -7,5 +7,5 @@ var userInfo = {
 
 window.Global = {
     userInfo: userInfo,
-    existEnemy1: 0,
+    existEnemy: 0,
 };
