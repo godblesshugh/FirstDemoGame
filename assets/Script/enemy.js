@@ -39,11 +39,10 @@ cc.Class({
         this.hitCount = 0;
         this.hp = hp || this.hp;
         this.level = level || this.level;
+        this.baseHP = this.hp; // 用来做分裂的时候，数据参考
         common.ResetEnemy(this.node);
         // init
-        this.node.getComponent(cc.Sprite).SpriteFrame = this.sprArray[3];
-        this.hp = 110;
-        this.node.getComponentInChildren(cc.Label).string = 110;
+        this.node.getComponentInChildren(cc.Label).string = common.ParseHP(this.hp);
         if (Math.random() > 0.5) {
             leftEnter(this);
         } else {
@@ -52,6 +51,7 @@ cc.Class({
         var rigidbody = this.node.getComponent(cc.RigidBody);
         var mass = rigidbody.getMass();
         this.weight = Math.ceil(mass / 10);
+        common.switchEnemyColor(this);
     },
 
     start() {},
@@ -66,16 +66,13 @@ cc.Class({
     onBeginContact: function (contact, selfCollider, otherCollider) {
         if (otherCollider.node.name === 'bullet') {
             // 被子弹打中了
-            this.hp -= otherCollider.node.getComponent('bullet').hp;
+            this.hp -= Global.bulletATK;
             if (this.hp < 0) {
                 this.enemyGroup.enemyDestroy(this.node);
             }
             var label = this.node.getComponentInChildren(cc.Label);
-            label.string = this.hp;
-            this.hitCount++;
-            if (this.hitCount % 5 === 0) {
-                switchEnemy(this);
-            }
+            label.string = common.ParseHP(this.hp);
+            common.switchEnemyColor(this);
         }
     },
 
@@ -103,25 +100,6 @@ cc.Class({
         }
     },
 });
-
-var switchEnemy = (that) => {
-    var sprite = that.node.getComponent(cc.Sprite);
-    switch (sprite.spriteFrame.name) {
-        case 'hexagon_green':
-            sprite.spriteFrame = that.sprArray[3];
-            return true;
-        case 'hexagon_red':
-            sprite.spriteFrame = that.sprArray[2];
-            return true;
-        case 'hexagon_orange':
-            sprite.spriteFrame = that.sprArray[1];
-            return true;
-        case 'hexagon_blue':
-            sprite.spriteFrame = that.sprArray[0];
-            return true;
-    }
-    return false;
-};
 
 var leftEnter = (that) => {
     var rigidbody = that.node.getComponent(cc.RigidBody);

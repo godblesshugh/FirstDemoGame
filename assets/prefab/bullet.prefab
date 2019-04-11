@@ -46,8 +46,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 12,
-      "height": 23
+      "width": 18,
+      "height": 36
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -116,9 +116,6 @@
       "__id__": 1
     },
     "_enabled": true,
-    "xSpeed": 0,
-    "ySpeed": 1500,
-    "hp": 20,
     "_id": ""
   },
   {
@@ -146,36 +143,29 @@
     "_id": ""
   },
   {
-    "__type__": "cc.PhysicsPolygonCollider",
+    "__type__": "cc.PhysicsBoxCollider",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 100,
+    "tag": 0,
     "_density": 1,
     "_sensor": true,
-    "_friction": 1,
+    "_friction": 0.2,
     "_restitution": 0,
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": 0.1,
+      "y": 5.5
     },
-    "points": [
-      {
-        "__type__": "cc.Vec2",
-        "x": -5.18,
-        "y": 7.69
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 4.85,
-        "y": 7.69
-      }
-    ],
+    "_size": {
+      "__type__": "cc.Size",
+      "width": 12.5,
+      "height": 3.2
+    },
     "_id": ""
   },
   {

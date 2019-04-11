@@ -99,6 +99,59 @@ const ResetEnemy = (node) => {
     return node;
 };
 
+const ParseHP = (hp) => {
+    let str = hp + '';
+    if (hp > 999) {
+        // str = 'k';
+        if (hp > 99999) {
+            return parseInt(hp / 1000) + 'k';
+        }
+        if (hp > 9999) {
+            hp = parseInt(hp / 100) / 10; // 保证是一位小数
+            let xsd = hp.toString().split('.');
+            if (xsd.length === 1) {
+                hp = hp.toString() + '.0';
+            }
+            return hp + 'k';
+        }
+        hp = parseInt(hp / 10) / 100; // 保证是两位小数
+        let xsd = hp.toString().split('.');
+        if (xsd.length === 1) {
+            hp = hp.toString() + '.00';
+        }
+        if (xsd.length > 1) {
+            if (xsd[1].length < 2) {
+                hp = hp.toString() + '0';
+            }
+        }
+        return hp + 'k';
+    }
+    return str;
+};
+
+const switchEnemyColor = (that) => {
+    var remainHP = that.hp; // 敌人剩余 HP
+    var remainCount = parseInt(remainHP / Global.bulletATK); // 敌人剩余打击数量
+    var sprite = that.node.getComponent(cc.Sprite);
+    if (remainCount < 3) {
+        sprite.spriteFrame = that.sprArray[0];
+        return;
+    }
+    if (remainCount < 8) {
+        sprite.spriteFrame = that.sprArray[1];
+        return;
+    }
+    if (remainCount < 15) {
+        sprite.spriteFrame = that.sprArray[2];
+        return;
+    }
+    if (remainCount > 20) {
+        sprite.spriteFrame = that.sprArray[3];
+        return;
+    }
+    return false;
+};
+
 module.exports = {
     init: init,
     GameState: GameState,
@@ -109,4 +162,6 @@ module.exports = {
     TimeFmt: TimeFmt,
     BatchInitObjPool: BatchInitObjPool,
     ResetEnemy: ResetEnemy,
+    ParseHP: ParseHP,
+    switchEnemyColor: switchEnemyColor,
 };

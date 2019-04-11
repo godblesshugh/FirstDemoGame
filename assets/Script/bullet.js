@@ -6,18 +6,6 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        xSpeed: {
-            default: 0,
-            type: cc.Integer
-        },
-        ySpeed: {
-            default: 0,
-            type: cc.Integer
-        },
-        hp: {
-            default: 0,
-            type: cc.Integer
-        },
     },
 
     onLoad() {
@@ -26,10 +14,6 @@ cc.Class({
 
     onBeginContact: function (contact, selfCollider, otherCollider) {
         this.bulletGroup.bulletDestroy(selfCollider.node);
-    },
-
-    // 每次将要处理碰撞体接触逻辑时被调用
-    onPreSolve: function (contact, selfCollider, otherCollider) {
     },
 
     start() {

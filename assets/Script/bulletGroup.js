@@ -22,6 +22,7 @@ const bulletInfinite = cc.Class({
         name: '',
         freqTime: 0,
         initPoolCount: 0,
+        initATK: 19,
         prefab: cc.Prefab,
         position: {
             default: [],
@@ -78,6 +79,13 @@ cc.Class({
         var v2_x = position.x + eval(posInfo.xAxis);
         var v2_y = position.y + eval(posInfo.yAxis);
         return cc.v2(v2_x, v2_y);
+    },
+
+    updateBullet: function(ATK, COUNT) {
+        // 子弹攻击力增加
+        Global.bulletATK += ATK;
+        // TODO: 子弹数量增加
+        Global.bulletCOUNT += COUNT;
     },
 
     bulletDestroy: function (nodeInfo) {

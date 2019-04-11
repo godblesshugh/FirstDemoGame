@@ -34,6 +34,8 @@ cc.Class({
         cc.director.getPhysicsManager().enabled = true;
         this.enabledContactListener = true; // 刚体的碰撞检测
 
+        // cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_shapeBit;
+
         // cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
         //     cc.PhysicsManager.DrawBits.e_pairBit |
         //     cc.PhysicsManager.DrawBits.e_centerOfMassBit |

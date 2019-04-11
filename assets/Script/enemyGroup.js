@@ -31,6 +31,7 @@ cc.Class({
 
     startAction: function () {
         this.eState = common.GameState.start;
+        // TODO: 之后要改成顺序播放，频次改成概率来生成 enemy
         for (var i = 0; i < this.enemyG.length; i++) {
             var freqTime = this.enemyG[i].freqTime;
             var enemyName = 'enemy_callback_' + i;
@@ -46,7 +47,7 @@ cc.Class({
             return;
         }
         var newNode = common.PopPool(this, objName, enemyInfo.prefab, this.node);
-        newNode.getComponent('enemy').init();
+        newNode.getComponent('enemy').init(1000 + parseInt(Math.random() * 1000), 1);
     },
     getNewEnemyPosition: function (newNode) {
         var randx = Math.random() > 0.5 ? this.node.parent.width / 2 - newNode.width / 2 - 10 : -this.node.parent.width / 2 + newNode.width / 2 + 10;
