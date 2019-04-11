@@ -262,7 +262,7 @@
     "_angularVelocity": 0,
     "_fixedRotation": false,
     "enabledContactListener": true,
-    "bullet": true,
+    "bullet": false,
     "_id": ""
   },
   {

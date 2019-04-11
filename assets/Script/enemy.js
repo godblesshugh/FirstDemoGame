@@ -1,6 +1,9 @@
 'use strict';
 
 var common = require('./common');
+var xRange = 0;
+var xLimit = 0;
+var yLimit = 0;
 
 cc.Class({
     extends: cc.Component,
@@ -30,11 +33,15 @@ cc.Class({
 
     onLoad() {
         this.enemyGroup = this.node.parent.getComponent('enemyGroup');
+        xRange = cc.view.getVisibleSize().width / 2 - this.node.width * 0.3;
+        xLimit = xRange * 2;
+        yLimit = (cc.view.getVisibleSize().height / 2 - this.node.height * 0.3) * 2;
     },
 
     init: function (hp, level) {
         if (this.node.group !== 'enemy') {
             this.node.group = 'enemy';
+            return;
         }
         this.hitCount = 0;
         this.hp = hp || this.hp;
@@ -43,36 +50,70 @@ cc.Class({
         common.ResetEnemy(this.node);
         // init
         this.node.getComponentInChildren(cc.Label).string = common.ParseHP(this.hp);
+        var rigidbody = this.node.getComponent(cc.RigidBody);
+        var mass = rigidbody.getMass();
+        this.weight = Math.ceil(mass / 10);
+        common.switchEnemyColor(this);
         if (Math.random() > 0.5) {
             leftEnter(this);
         } else {
             rightEnter(this);
         }
-        var rigidbody = this.node.getComponent(cc.RigidBody);
-        var mass = rigidbody.getMass();
-        this.weight = Math.ceil(mass / 10);
-        common.switchEnemyColor(this);
     },
 
-    start() {},
+    start() { },
 
     update(dt) {
         if (this.enemyGroup.eState !== common.GameState.start) {
             return;
         }
+        var x = this.node.position.x;
+        x = x > 0 ? x : -x;
+        var y = this.node.position.y;
+        y = y > 0 ? y : -y;
+        if (x > xLimit || y > yLimit) {
+            // 避免超出太多，就直接销毁
+            this.enemyGroup.enemyDestroy(this.node);
+            return;
+        }
+        // 如果是在屏幕外，那就先改变一下enemy的属性，让它可以通过两侧的墙？
+        // if (x > xRange && this.node.group !== 'outScreenEnemy') {
+        //     this.node.group = 'outScreenEnemy';
+        //     return;
+        // }
     },
 
     // 只在两个碰撞体开始接触时被调用一次
     onBeginContact: function (contact, selfCollider, otherCollider) {
-        if (otherCollider.node.name === 'bullet') {
-            // 被子弹打中了
-            this.hp -= Global.bulletATK;
-            if (this.hp < 0) {
-                this.enemyGroup.enemyDestroy(this.node);
+        switch (otherCollider.node.name) {
+            case 'bullet': {
+                this.hp -= Global.bulletATK;
+                if (this.hp < 0) {
+                    this.enemyGroup.enemyDestroy(this.node);
+                }
+                var label = this.node.getComponentInChildren(cc.Label);
+                label.string = common.ParseHP(this.hp);
+                common.switchEnemyColor(this);
+                break;
             }
-            var label = this.node.getComponentInChildren(cc.Label);
-            label.string = common.ParseHP(this.hp);
-            common.switchEnemyColor(this);
+            case 'leftWall':
+                {
+                    // 撞到了左墙
+                    // 如果是从外侧碰到了，那就忽略
+                    if (selfCollider.body.getLinearVelocityFromWorldPoint(selfCollider.body.getWorldPosition()).x > 0) {
+                        contact.disabled = true;
+                    }
+                    break;
+                }
+            case 'rightWall':
+                {
+                    // 撞到了右墙
+                    // 如果是从外侧碰到了，那就忽略
+                    if (selfCollider.body.getLinearVelocityFromWorldPoint(selfCollider.body.getWorldPosition()).x < 0) {
+                        contact.disabled = true;
+                    }
+                    break;
+                }
         }
     },
 

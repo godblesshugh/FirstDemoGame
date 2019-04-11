@@ -44,9 +44,9 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.45214111694152925,
-      "y": 0.45214111694152925,
-      "z": 0.45214111694152925
+      "x": 0.4634323463268366,
+      "y": 0.4634323463268366,
+      "z": 0.4634323463268366
     },
     "_quat": {
       "__type__": "cc.Quat",
@@ -395,6 +395,7 @@
     "name": "bullet",
     "freqTime": 0.05,
     "initPoolCount": 50,
+    "initATK": 19,
     "prefab": {
       "__uuid__": "ac3322f2-0326-4a3e-8a08-140ecc87b3a0"
     },
@@ -900,7 +901,7 @@
     "_skewY": 0,
     "_zIndex": 0,
     "_is3DNode": false,
-    "groupIndex": 3,
+    "groupIndex": 5,
     "_id": "04PV2XIjVCRri1LshRJafG"
   },
   {
@@ -1043,7 +1044,7 @@
     "_skewY": 0,
     "_zIndex": 0,
     "_is3DNode": false,
-    "groupIndex": 3,
+    "groupIndex": 5,
     "_id": "70De7jDhBAl7L/yiNGMm4u"
   },
   {

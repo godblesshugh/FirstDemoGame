@@ -90,6 +90,7 @@ const TimeFmt = (time, fmt) => { //author: meizz
 
 // 重置六边形状态（被消除之后使用）
 const ResetEnemy = (node) => {
+    node.stopAllActions();
     var rigidbody = node.getComponent(cc.RigidBody);
     rigidbody.linearVelocity = cc.v2(0, 0);
     rigidbody.angularVelocity = 0;
