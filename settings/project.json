@@ -16,7 +16,7 @@
       false,
       true,
       true,
-      null,
+      true,
       true,
       false
     ],
@@ -35,7 +35,7 @@
     ],
     [
       false,
-      false,
+      true,
       false,
       true,
       false
@@ -68,7 +68,7 @@
     "enemy",
     "bullet",
     "top&downWall",
-    "outScreenEnemy",
+    "outScreenWall",
     "left&rightWall",
     "none"
   ],
@@ -78,6 +78,5 @@
     "width": 960
   },
   "use-customize-simulator": false,
-  "use-project-simulator-setting": false,
-  "start-scene": "current"
+  "use-project-simulator-setting": false
 }

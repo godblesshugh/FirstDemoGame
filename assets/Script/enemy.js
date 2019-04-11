@@ -38,26 +38,33 @@ cc.Class({
         yLimit = (cc.view.getVisibleSize().height / 2 - this.node.height * 0.3) * 2;
     },
 
-    init: function (hp, level) {
+    init: function (hp, level, linearImpulse, position) {
         if (this.node.group !== 'enemy') {
             this.node.group = 'enemy';
             return;
         }
-        this.hitCount = 0;
-        this.hp = hp || this.hp;
-        this.level = level || this.level;
+        this.hp = hp;
+        this.level = level;
         this.baseHP = this.hp; // 用来做分裂的时候，数据参考
         common.ResetEnemy(this.node);
         // init
         this.node.getComponentInChildren(cc.Label).string = common.ParseHP(this.hp);
-        var rigidbody = this.node.getComponent(cc.RigidBody);
-        var mass = rigidbody.getMass();
-        this.weight = Math.ceil(mass / 10);
+        // TODO: 暂时用固定的重量，不知道为什么分裂的时候计算不出来重量
+        // var rigidbody = this.node.getComponent(cc.RigidBody);
+        // var mass = rigidbody.getMass();
+        // this.weight = Math.ceil(mass / 10);
+        this.weight = this.level + 1;
         common.switchEnemyColor(this);
-        if (Math.random() > 0.5) {
-            leftEnter(this);
+        if (position) {
+            // 传进来了坐标，意思是需要分裂了
+            splitEnter(this, position, linearImpulse);
         } else {
-            rightEnter(this);
+            // 正常进入
+            if (Math.random() > 0.5) {
+                leftEnter(this);
+            } else {
+                rightEnter(this);
+            }
         }
     },
 
@@ -76,11 +83,6 @@ cc.Class({
             this.enemyGroup.enemyDestroy(this.node);
             return;
         }
-        // 如果是在屏幕外，那就先改变一下enemy的属性，让它可以通过两侧的墙？
-        // if (x > xRange && this.node.group !== 'outScreenEnemy') {
-        //     this.node.group = 'outScreenEnemy';
-        //     return;
-        // }
     },
 
     // 只在两个碰撞体开始接触时被调用一次
@@ -90,6 +92,8 @@ cc.Class({
                 this.hp -= Global.bulletATK;
                 if (this.hp < 0) {
                     this.enemyGroup.enemyDestroy(this.node);
+                    // position, baseHP, level
+                    this.enemyGroup.splitDown(this.node.position, this.baseHP, this.level);
                 }
                 var label = this.node.getComponentInChildren(cc.Label);
                 label.string = common.ParseHP(this.hp);
@@ -103,6 +107,11 @@ cc.Class({
                     if (selfCollider.body.getLinearVelocityFromWorldPoint(selfCollider.body.getWorldPosition()).x > 0) {
                         contact.disabled = true;
                     }
+                    // 如果是一开始进入的时候碰撞了，也忽略
+                    if (selfCollider.body.getLinearVelocityFromWorldPoint(selfCollider.body.getWorldPosition()).x === 0 &&
+                        selfCollider.body.getLinearVelocityFromWorldPoint(selfCollider.body.getWorldPosition()).y === 0) {
+                        contact.disabled = true;
+                    }
                     break;
                 }
             case 'rightWall':
@@ -110,6 +119,11 @@ cc.Class({
                     // 撞到了右墙
                     // 如果是从外侧碰到了，那就忽略
                     if (selfCollider.body.getLinearVelocityFromWorldPoint(selfCollider.body.getWorldPosition()).x < 0) {
+                        contact.disabled = true;
+                    }
+                    // 如果是一开始进入的时候碰撞了，也忽略
+                    if (selfCollider.body.getLinearVelocityFromWorldPoint(selfCollider.body.getWorldPosition()).x === 0 &&
+                        selfCollider.body.getLinearVelocityFromWorldPoint(selfCollider.body.getWorldPosition()).y === 0) {
                         contact.disabled = true;
                     }
                     break;
@@ -139,35 +153,46 @@ cc.Class({
                     break;
                 }
         }
-    },
+    }
 });
 
 var leftEnter = (that) => {
     var rigidbody = that.node.getComponent(cc.RigidBody);
-    var x = -(cc.view.getVisibleSize().width / 2 + that.node.width / 2) - 5;
-    var y = (cc.view.getVisibleSize().height / 2 - that.node.height / 2) - 10;
+    var x = -(cc.view.getVisibleSize().width + that.node.width) / 2 - 5;
+    var y = (cc.view.getVisibleSize().height - that.node.width) / 2 - 10;
     that.node.setPosition(cc.v2(x, y));
-    var enterAction = cc.sequence(cc.moveBy(2, that.node.width * 1.5, 0), cc.callFunc(function () {
+    var enterAction = cc.sequence(cc.moveTo(2, cc.v2(-(cc.view.getVisibleSize().width - that.node.width) / 2 + 5, y)), cc.callFunc(function () {
         rigidbody.fixedRotation = false;
-        rigidbody.angularVelocity = 50;
+        rigidbody.angularVelocity = 100;
         rigidbody.gravityScale = 1;
         rigidbody.angularDamping = 0.8;
-        rigidbody.applyLinearImpulse(cc.v2(500 * this.weight, 0), rigidbody.getWorldCenter(), true);
+        rigidbody.applyLinearImpulse(cc.v2(500 * this.weight, 0), rigidbody.getWorldCenter());
     }, that));
     that.node.runAction(enterAction);
 };
 
 var rightEnter = (that) => {
     var rigidbody = that.node.getComponent(cc.RigidBody);
-    var x = (cc.view.getVisibleSize().width / 2 + that.node.width / 2) + 5;
-    var y = (cc.view.getVisibleSize().height / 2 - that.node.height / 2) - 10;
+    var x = (cc.view.getVisibleSize().width + that.node.width) / 2 + 5;
+    var y = (cc.view.getVisibleSize().height - that.node.width) / 2 - 10;
+    that.node.setPosition(cc.v2((cc.view.getVisibleSize().width) / 2, y));
     that.node.setPosition(cc.v2(x, y));
-    var enterAction = cc.sequence(cc.moveBy(2, -(that.node.width * 1.5), 0), cc.callFunc(function () {
+    var enterAction = cc.sequence(cc.moveTo(2, cc.v2((cc.view.getVisibleSize().width - that.node.width) / 2 - 5, y)), cc.callFunc(function () {
         rigidbody.fixedRotation = false;
-        rigidbody.angularVelocity = -20;
+        rigidbody.angularVelocity = -100;
         rigidbody.gravityScale = 1;
         rigidbody.angularDamping = 0.8;
-        rigidbody.applyLinearImpulse(cc.v2(-500 * this.weight, 0), rigidbody.getWorldCenter(), true);
+        rigidbody.applyLinearImpulse(cc.v2(-500 * this.weight, 0), rigidbody.getWorldCenter());
     }, that));
     that.node.runAction(enterAction);
+};
+
+var splitEnter = (that, position, linearImpulse) => {
+    var rigidbody = that.node.getComponent(cc.RigidBody);
+    that.node.setPosition(position);
+    rigidbody.fixedRotation = false;
+    rigidbody.angularVelocity = 20;
+    rigidbody.gravityScale = 1;
+    rigidbody.angularDamping = 0.8;
+    rigidbody.applyLinearImpulse(cc.v2(linearImpulse.x * that.weight, 0), rigidbody.getWorldCenter());
 };
