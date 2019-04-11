@@ -136,7 +136,7 @@ cc.Class({
         switch (otherCollider.node.name) {
             case 'ground':
                 {
-                    if (selfCollider.body.linearVelocity.y < 500) {
+                    if (selfCollider.body.linearVelocity.y < 600) {
                         selfCollider.body.applyLinearImpulse(cc.v2(200 * this.weight, 2000 * this.weight), selfCollider.body.getWorldCenter(), true);
                     }
                     // 撞到了地面
@@ -166,7 +166,7 @@ var leftEnter = (that) => {
         rigidbody.angularVelocity = 100;
         rigidbody.gravityScale = 1;
         rigidbody.angularDamping = 0.8;
-        rigidbody.applyLinearImpulse(cc.v2(500 * this.weight, 0), rigidbody.getWorldCenter());
+        rigidbody.applyLinearImpulse(cc.v2(1000 * this.weight, 0), rigidbody.getWorldCenter(), true);
     }, that));
     that.node.runAction(enterAction);
 };
@@ -182,7 +182,7 @@ var rightEnter = (that) => {
         rigidbody.angularVelocity = -100;
         rigidbody.gravityScale = 1;
         rigidbody.angularDamping = 0.8;
-        rigidbody.applyLinearImpulse(cc.v2(-500 * this.weight, 0), rigidbody.getWorldCenter());
+        rigidbody.applyLinearImpulse(cc.v2(-1000 * this.weight, 0), rigidbody.getWorldCenter(), true);
     }, that));
     that.node.runAction(enterAction);
 };
@@ -194,5 +194,18 @@ var splitEnter = (that, position, linearImpulse) => {
     rigidbody.angularVelocity = 20;
     rigidbody.gravityScale = 1;
     rigidbody.angularDamping = 0.8;
-    rigidbody.applyLinearImpulse(cc.v2(linearImpulse.x * that.weight, 0), rigidbody.getWorldCenter());
+    // 判断一下当前位置和受力方向，如果快要超出边界，则需要向中间施加冲量
+    if (linearImpulse.x < 0) {
+        if (position.x < -(cc.view.getVisibleSize().width + that.node.width) / 2 - 5) {
+            linearImpulse.x = -linearImpulse.x;
+        }
+    } else {
+        if (position.x > (cc.view.getVisibleSize().width + that.node.width) / 2 + 5) {
+            linearImpulse.x = -linearImpulse.x;
+        }
+    }
+    var enterAction = cc.callFunc(function () {
+        rigidbody.applyLinearImpulse(cc.v2(linearImpulse.x * this.weight, linearImpulse.y * this.weight), rigidbody.getWorldCenter(), true);
+    }, that);
+    that.node.runAction(enterAction);
 };

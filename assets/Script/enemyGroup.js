@@ -32,7 +32,7 @@ cc.Class({
     startAction: function () {
         this.eState = common.GameState.start;
         // TODO: 之后要改成顺序播放，频次改成概率来生成 enemy
-        for (var i = 2; i < this.enemyG.length; i++) {
+        for (var i = 0; i < this.enemyG.length; i++) {
             var freqTime = this.enemyG[i].freqTime;
             var enemyName = 'enemy_callback_' + i;
             this[enemyName] = function (i) {
@@ -42,7 +42,7 @@ cc.Class({
         }
     },
     getNewEnemy: function (level) {
-        if (Global.existEnemy > 0) {
+        if (Global.existEnemy > 5) {
             return;
         }
         let newNode = _getNewEnemy(this, level);
@@ -52,11 +52,12 @@ cc.Class({
         // 数字是初始数字的一半，等级低一级，position 重合，给一个斜向上的冲量，向两边抛出
         if (level > 0) {
             level --;
-            console.log('need splitDown enemy, level', level, ', HP: ', baseHP);
+            baseHP = Math.round(baseHP / 2);
             let leftEnemy = _getNewEnemy(this, level);
             let rightEnemy = _getNewEnemy(this, level);
-            leftEnemy.getComponent('enemy').init(baseHP, level, cc.v2(-500, 200), position);
-            rightEnemy.getComponent('enemy').init(baseHP, level, cc.v2(500, 200), position);
+            // TODO: 好像这里出现了 NaN 的情况？为啥
+            leftEnemy.getComponent('enemy').init(baseHP, level, cc.v2(-1000, 3000), position);
+            rightEnemy.getComponent('enemy').init(baseHP, level, cc.v2(1000, 3000),  position);
         }
     },
     getNewEnemyPosition: function (newNode) {
