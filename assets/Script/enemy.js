@@ -39,6 +39,9 @@ cc.Class({
     },
 
     init: function (hp, level, linearImpulse, position) {
+        if (isNaN(hp)) {
+            hp = 1000;
+        }
         if (this.node.group !== 'enemy') {
             this.node.group = 'enemy';
             return;

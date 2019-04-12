@@ -9,7 +9,7 @@ cc.Class({
     },
 
     onLoad() {
-        this.enemyGroup = this.node.parent.getComponent('enemyGroup');
+        this.bulletGroup = this.node.parent.getComponent('bulletGroup');
     },
 
     onBeginContact: function (contact, selfCollider, otherCollider) {
