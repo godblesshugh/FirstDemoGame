@@ -23,7 +23,7 @@ const InitObjPool = (that, objInfo) => {
     var name = objInfo.name;
     var poolName = GetObjPoolName(name);
     that[poolName] = new cc.NodePool();
-    let initPoolCount = objInfo.initPoolCount;
+    let initPoolCount = objInfo.initPoolCount || 3;
     for (let ii = 0; ii < initPoolCount; ++ii) {
         let node = cc.instantiate(objInfo.prefab); // 创建节点
         that[poolName].put(node); // 通过 putInPool 接口放入对象池
@@ -87,8 +87,8 @@ const TimeFmt = (time, fmt) => { //author: meizz
     return fmt;
 };
 
-// 重置六边形状态（被消除之后使用）
-const ResetEnemy = (node) => {
+// 重置节点和刚体的运动状态
+const ResetNodeAction = (node) => {
     node.stopAllActions();
     var rigidbody = node.getComponent(cc.RigidBody);
     rigidbody.linearVelocity = cc.v2(0, 0);
@@ -161,7 +161,8 @@ module.exports = {
     PushPool: PushPool,
     TimeFmt: TimeFmt,
     BatchInitObjPool: BatchInitObjPool,
-    ResetEnemy: ResetEnemy,
+    ResetEnemy: ResetNodeAction,
+    ResetCoin: ResetNodeAction,
     ParseHP: ParseHP,
     switchEnemyColor: switchEnemyColor,
 };

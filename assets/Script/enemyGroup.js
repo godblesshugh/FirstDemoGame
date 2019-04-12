@@ -14,6 +14,15 @@ var enemyG = cc.Class({
     }
 });
 
+var coin = cc.Class({
+    name: 'coinObj',
+    properties: {
+        name: '',
+        initPoolCount: 0,
+        prefab: cc.Prefab,
+    }
+});
+
 cc.Class({
     extends: cc.Component,
 
@@ -21,12 +30,17 @@ cc.Class({
         enemyG: {
             default: [],
             type: enemyG,
+        },
+        coinObj: {
+            default: null,
+            type: coin
         }
     },
 
     onLoad: function () {
         this.eState = common.GameState.none;
         common.BatchInitObjPool(this, this.enemyG);
+        common.InitObjPool(this, this.coinObj);
     },
 
     startAction: function () {
@@ -42,22 +56,23 @@ cc.Class({
         }
     },
     getNewEnemy: function (level) {
-        if (Global.existEnemy > 5) {
+        if (Global.existEnemy > 0) {
             return;
         }
         let newNode = _getNewEnemy(this, level);
+        newNode.getComponent('enemy').enemyGroup = this;
         newNode.getComponent('enemy').init(1000 + parseInt(Math.random() * 1000), level);
     },
     splitDown: function (position, baseHP, level) {
         // 数字是初始数字的一半，等级低一级，position 重合，给一个斜向上的冲量，向两边抛出
         if (level > 0) {
-            level --;
+            level--;
             baseHP = Math.round(baseHP / 2);
             let leftEnemy = _getNewEnemy(this, level);
             let rightEnemy = _getNewEnemy(this, level);
             // TODO: 好像这里出现了 NaN 的情况？为啥
             leftEnemy.getComponent('enemy').init(baseHP, level, cc.v2(-1000, 3000), position);
-            rightEnemy.getComponent('enemy').init(baseHP, level, cc.v2(1000, 3000),  position);
+            rightEnemy.getComponent('enemy').init(baseHP, level, cc.v2(1000, 3000), position);
         }
     },
     getNewEnemyPosition: function (newNode) {
@@ -68,11 +83,29 @@ cc.Class({
     enemyDestroy: function (nodeInfo) {
         common.PushPool(this, nodeInfo);
     },
+    produceCoins: function (position, linearVelocity) {
+        // 打碎敌人以后，需要生产出金币，可以获取后，增加炮台的攻击力和子弹数
+        let toRight = linearVelocity.x > 0 ? true : false; // 向左还是向右
+        for (let index = 0; index < 3; index++) {
+            let _coin = _getNewCoin(this);
+            // position, type, value, toRight, index
+            _coin.getComponent('coin').init(position, 0, 1, toRight, index);
+        }
+    },
+    coinDestroy: function (nodeInfo) {
+        common.PushPool(this, nodeInfo);
+    },
 });
 
 const _getNewEnemy = (that, level) => {
     let enemyInfo = that.enemyG[level];
     let objName = enemyInfo.name;
     let newNode = common.PopPool(that, objName, enemyInfo.prefab, that.node);
+    return newNode;
+};
+
+const _getNewCoin = (that) => {
+    let objName = 'coin';
+    let newNode = common.PopPool(that, objName, that.coinObj.prefab, that.node);
     return newNode;
 };

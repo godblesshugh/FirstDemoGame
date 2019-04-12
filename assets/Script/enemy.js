@@ -32,7 +32,6 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.enemyGroup = this.node.parent.getComponent('enemyGroup');
         xRange = cc.view.getVisibleSize().width / 2 - this.node.width * 0.3;
         xLimit = xRange * 2;
         yLimit = (cc.view.getVisibleSize().height / 2 - this.node.height * 0.3) * 2;
@@ -97,26 +96,26 @@ cc.Class({
                     this.enemyGroup.enemyDestroy(this.node);
                     // position, baseHP, level
                     this.enemyGroup.splitDown(this.node.position, this.baseHP, this.level);
+                    this.enemyGroup.produceCoins(this.node.position, this.node.getComponent(cc.RigidBody).linearVelocity);
                 }
                 var label = this.node.getComponentInChildren(cc.Label);
                 label.string = common.ParseHP(this.hp);
                 common.switchEnemyColor(this);
                 break;
             }
-            case 'leftWall':
-                {
-                    // 撞到了左墙
-                    // 如果是从外侧碰到了，那就忽略
-                    if (selfCollider.body.getLinearVelocityFromWorldPoint(selfCollider.body.getWorldPosition()).x > 0) {
-                        contact.disabled = true;
-                    }
-                    // 如果是一开始进入的时候碰撞了，也忽略
-                    if (selfCollider.body.getLinearVelocityFromWorldPoint(selfCollider.body.getWorldPosition()).x === 0 &&
-                        selfCollider.body.getLinearVelocityFromWorldPoint(selfCollider.body.getWorldPosition()).y === 0) {
-                        contact.disabled = true;
-                    }
-                    break;
+            case 'leftWall': {
+                // 撞到了左墙
+                // 如果是从外侧碰到了，那就忽略
+                if (selfCollider.body.getLinearVelocityFromWorldPoint(selfCollider.body.getWorldPosition()).x > 0) {
+                    contact.disabled = true;
                 }
+                // 如果是一开始进入的时候碰撞了，也忽略
+                if (selfCollider.body.getLinearVelocityFromWorldPoint(selfCollider.body.getWorldPosition()).x === 0 &&
+                    selfCollider.body.getLinearVelocityFromWorldPoint(selfCollider.body.getWorldPosition()).y === 0) {
+                    contact.disabled = true;
+                }
+                break;
+            }
             case 'rightWall':
                 {
                     // 撞到了右墙
@@ -140,7 +139,7 @@ cc.Class({
             case 'ground':
                 {
                     if (selfCollider.body.linearVelocity.y < 600) {
-                        selfCollider.body.applyLinearImpulse(cc.v2(200 * this.weight, 2000 * this.weight), selfCollider.body.getWorldCenter(), true);
+                        selfCollider.body.applyLinearImpulse(cc.v2(500 * this.weight, 2000 * this.weight), selfCollider.body.getWorldCenter(), true);
                     }
                     // 撞到了地面
                     break;

@@ -17,19 +17,7 @@
       true,
       true,
       true,
-      true,
-      false
-    ],
-    [
       false,
-      true,
-      false,
-      true
-    ],
-    [
-      false,
-      true,
-      true,
       false,
       true
     ],
@@ -43,10 +31,20 @@
     [
       false,
       true,
+      true,
+      false,
+      false,
+      null,
+      true
+    ],
+    [
+      false,
+      true,
       false,
       false,
       false,
-      false
+      null,
+      true
     ],
     [
       false,
@@ -55,6 +53,26 @@
       false,
       false,
       false,
+      true
+    ],
+    [
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      false,
+      true
+    ],
+    [
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      true,
       false
     ]
   ],
@@ -68,9 +86,10 @@
     "enemy",
     "bullet",
     "top&downWall",
-    "outScreenWall",
     "left&rightWall",
-    "none"
+    "coinGround",
+    "coin",
+    "cannon"
   ],
   "simulator-orientation": false,
   "simulator-resolution": {
