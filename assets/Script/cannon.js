@@ -34,6 +34,6 @@ const moveCannon = (that) => {
     if (x > cannonMoveBase - cannonWidthBase) {
         x = cannonMoveBase - cannonWidthBase; // 不能超过右边框
     }
-    cannon.position = cc.v2(x, cannon.position.y);
+    cannon.setPosition(cc.v2(x, cannon.position.y));
     // FIXME: 还有一种方案，自己写 update 函数：https://blog.csdn.net/qq_42661974/article/details/86222179
 };

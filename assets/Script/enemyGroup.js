@@ -56,11 +56,10 @@ cc.Class({
         }
     },
     getNewEnemy: function (level) {
-        if (Global.existEnemy > 0) {
+        if (Global.existEnemy > 5) {
             return;
         }
         let newNode = _getNewEnemy(this, level);
-        newNode.getComponent('enemy').enemyGroup = this;
         newNode.getComponent('enemy').init(1000 + parseInt(Math.random() * 1000), level);
     },
     splitDown: function (position, baseHP, level) {
@@ -83,7 +82,10 @@ cc.Class({
     enemyDestroy: function (nodeInfo) {
         common.PushPool(this, nodeInfo);
     },
-    produceCoins: function (position, linearVelocity) {
+    produceCoins: function (level, position, linearVelocity) {
+        if (level > 0) {
+            return;
+        }
         // 打碎敌人以后，需要生产出金币，可以获取后，增加炮台的攻击力和子弹数
         let toRight = linearVelocity.x > 0 ? true : false; // 向左还是向右
         for (let index = 0; index < 3; index++) {
@@ -101,6 +103,7 @@ const _getNewEnemy = (that, level) => {
     let enemyInfo = that.enemyG[level];
     let objName = enemyInfo.name;
     let newNode = common.PopPool(that, objName, enemyInfo.prefab, that.node);
+    newNode.getComponent('enemy').enemyGroup = that;
     return newNode;
 };
 
