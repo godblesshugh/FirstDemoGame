@@ -93,10 +93,14 @@ cc.Class({
             case 'bullet': {
                 this.hp -= Global.bulletATK;
                 if (this.hp < 0) {
+                    let position = this.node.position;
+                    let baseHP = this.baseHP;
+                    let level = this.level;
+                    let linearVelocity = this.node.getComponent(cc.RigidBody).linearVelocity;
                     this.enemyGroup.enemyDestroy(this.node);
                     // position, baseHP, level
-                    this.enemyGroup.splitDown(this.node.position, this.baseHP, this.level);
-                    this.enemyGroup.produceCoins(this.node.position, this.node.getComponent(cc.RigidBody).linearVelocity);
+                    this.enemyGroup.splitDown(position, baseHP, level);
+                    this.enemyGroup.produceCoins(level, position, linearVelocity);
                 }
                 var label = this.node.getComponentInChildren(cc.Label);
                 label.string = common.ParseHP(this.hp);
@@ -177,7 +181,6 @@ var rightEnter = (that) => {
     var rigidbody = that.node.getComponent(cc.RigidBody);
     var x = (cc.view.getVisibleSize().width + that.node.width) / 2 + 5;
     var y = (cc.view.getVisibleSize().height - that.node.width) / 2 - 10;
-    that.node.setPosition(cc.v2((cc.view.getVisibleSize().width) / 2, y));
     that.node.setPosition(cc.v2(x, y));
     var enterAction = cc.sequence(cc.moveTo(2, cc.v2((cc.view.getVisibleSize().width - that.node.width) / 2 - 5, y)), cc.callFunc(function () {
         rigidbody.fixedRotation = false;

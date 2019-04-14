@@ -56,7 +56,7 @@ cc.Class({
         }
     },
     getNewEnemy: function (level) {
-        if (Global.existEnemy > 5) {
+        if (Global.existEnemy > 0) {
             return;
         }
         let newNode = _getNewEnemy(this, level);
@@ -67,10 +67,10 @@ cc.Class({
         if (level > 0) {
             level--;
             baseHP = Math.round(baseHP / 2);
-            let leftEnemy = _getNewEnemy(this, level);
-            let rightEnemy = _getNewEnemy(this, level);
             // TODO: 好像这里出现了 NaN 的情况？为啥
+            let leftEnemy = _getNewEnemy(this, level);
             leftEnemy.getComponent('enemy').init(baseHP, level, cc.v2(-1000, 3000), position);
+            let rightEnemy = _getNewEnemy(this, level);
             rightEnemy.getComponent('enemy').init(baseHP, level, cc.v2(1000, 3000), position);
         }
     },
