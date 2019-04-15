@@ -56,7 +56,7 @@ cc.Class({
         }
     },
     getNewEnemy: function (level) {
-        if (Global.existEnemy > 0) {
+        if (Global.existEnemy > 5) {
             return;
         }
         let newNode = _getNewEnemy(this, level);

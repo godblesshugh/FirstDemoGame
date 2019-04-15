@@ -22,6 +22,16 @@ cc.Class({
         }
     },
     init: function (position, type, value, toRight, index) {
+        // 清空该对象中可能存在的，之前保留的计时器具柄
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+            this.timeout = null;
+        }
+        // 将这个计时器句柄保留在当前对象中，为了下一次从对象池获取对象时，可以清空计时器
+        this.timeout = setTimeout(function () {
+            this.enemyGroup.coinDestroy(this.node);
+        }.bind(this), 10000);
+        this.pool = true;
         this.position = position;
         this.type = type;
         this.value = value;
@@ -46,10 +56,6 @@ cc.Class({
             rigidbody.applyLinearImpulse(cc.v2(toRight * 200 + index * 100, 200 + index * 100), rigidbody.getWorldCenter(), true);
         }, this);
         this.node.runAction(enterAction);
-        // FIXME: 这里很有可能出问题，因为这个 setTimeout 应该会持有这个节点，导致它始终无法释放
-        setTimeout(function () {
-            this.enemyGroup.coinDestroy(this.node);
-        }.bind(this), 10000);
     },
 
     start() {
