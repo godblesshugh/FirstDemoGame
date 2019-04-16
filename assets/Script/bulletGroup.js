@@ -24,11 +24,7 @@ const bulletInfinite = cc.Class({
         initPoolCount: 0,
         initATK: 19,
         prefab: cc.Prefab,
-        position: {
-            default: [],
-            type: bPosition,
-            tooltip: '多少排子弹',
-        }
+        margin: 0,
     }
 });
 
@@ -64,9 +60,20 @@ cc.Class({
 
     getNewBullet: function (bulletInfo) {
         var objName = bulletInfo.name;
-        for (var i = 0; i < bulletInfo.position.length; i++) {
+        // 一共支持并排5发子弹
+        // for (var i = 0; i < bulletInfo.position.length; i++) {
+        //     var newNode = common.PopPool(this, objName, bulletInfo.prefab, this.node);
+        //     var newV2 = this.getBulletPosition(bulletInfo.position[i]);
+        //     newNode.setPosition(newV2);
+        //     newNode.getComponent('bullet').bulletGroup = this;
+        //     var rigidbody = newNode.getComponent(cc.RigidBody);
+        //     rigidbody.linearVelocity = cc.v2(0, 1500);
+        // }
+        // 计算子弹坐标
+        var odd = Global.bulletCount % 2 === 0 ? false : true; // 子弹数是奇数还是偶数
+        for(let i = 0; i < Global.bulletCount; i++) {
             var newNode = common.PopPool(this, objName, bulletInfo.prefab, this.node);
-            var newV2 = this.getBulletPosition(bulletInfo.position[i]);
+            var newV2 = this.getBulletPosition(Global.bulletPosition[i]);
             newNode.setPosition(newV2);
             newNode.getComponent('bullet').bulletGroup = this;
             var rigidbody = newNode.getComponent(cc.RigidBody);
@@ -76,8 +83,8 @@ cc.Class({
 
     getBulletPosition: function (posInfo) {
         var position = this.cannon.getPosition();
-        var v2_x = position.x + eval(posInfo.xAxis);
-        var v2_y = position.y + eval(posInfo.yAxis);
+        var v2_x = position.x + posInfo.x;
+        var v2_y = position.y + posInfo.y;
         return cc.v2(v2_x, v2_y);
     },
 
@@ -85,7 +92,7 @@ cc.Class({
         // 子弹攻击力增加
         Global.bulletATK += ATK;
         // TODO: 子弹数量增加
-        Global.bulletCOUNT += COUNT;
+        Global.bulletCount += COUNT;
     },
 
     bulletDestroy: function (nodeInfo) {

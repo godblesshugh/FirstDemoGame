@@ -23,6 +23,15 @@ var coin = cc.Class({
     }
 });
 
+var boom = cc.Class({
+    name: 'boomObj',
+    properties: {
+        name: '',
+        initPoolCount: 0,
+        prefab: cc.Prefab,
+    }
+});
+
 cc.Class({
     extends: cc.Component,
 
@@ -34,13 +43,18 @@ cc.Class({
         coinObj: {
             default: null,
             type: coin
-        }
+        },
+        boomObj: {
+            default: null,
+            type: boom
+        },
     },
 
     onLoad: function () {
         this.eState = common.GameState.none;
         common.BatchInitObjPool(this, this.enemyG);
         common.InitObjPool(this, this.coinObj);
+        common.InitObjPool(this, this.boomObj);
     },
 
     startAction: function () {
@@ -97,6 +111,14 @@ cc.Class({
     coinDestroy: function (nodeInfo) {
         common.PushPool(this, nodeInfo);
     },
+    produceBoom: function (level, position) {
+        let _boom = _getNewBoom(this);
+        _boom.enemyGroup = this;
+        _boom.getComponent('boom').init(level, position);
+    },
+    boomDestroy: function (nodeInfo) {
+        common.PushPool(this, nodeInfo);
+    },
 });
 
 const _getNewEnemy = (that, level) => {
@@ -110,5 +132,11 @@ const _getNewEnemy = (that, level) => {
 const _getNewCoin = (that) => {
     let objName = 'coin';
     let newNode = common.PopPool(that, objName, that.coinObj.prefab, that.node);
+    return newNode;
+};
+
+const _getNewBoom = (that) => {
+    let objName = 'boom';
+    let newNode = common.PopPool(that, objName, that.boomObj.prefab, that.node);
     return newNode;
 };

@@ -92,15 +92,16 @@ cc.Class({
         switch (otherCollider.node.name) {
             case 'bullet': {
                 this.hp -= Global.bulletATK;
-                if (this.hp < 0) {
+                if (this.hp <= 0) {
                     let position = this.node.position;
                     let baseHP = this.baseHP;
                     let level = this.level;
                     let linearVelocity = this.node.getComponent(cc.RigidBody).linearVelocity;
-                    this.enemyGroup.enemyDestroy(this.node);
                     // position, baseHP, level
                     this.enemyGroup.splitDown(position, baseHP, level);
                     this.enemyGroup.produceCoins(level, position, linearVelocity);
+                    this.enemyGroup.produceBoom(level, position);
+                    this.enemyGroup.enemyDestroy(this.node);
                 }
                 var label = this.node.getComponentInChildren(cc.Label);
                 label.string = common.ParseHP(this.hp);
