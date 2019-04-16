@@ -26,7 +26,7 @@ cc.Class({
         },
     },
 
-    start() {},
+    start() { },
 
     // update (dt) {},
 
@@ -47,4 +47,12 @@ cc.Class({
         this.bulletGroup.startAction();
         this.enemyGroup.startAction();
     },
+
+    btnClick: function (event, eventData) {
+        // if (Global.bulletATK === 0) {
+        //     Global.bulletATK = 201;
+        // } else {
+        //     Global.bulletATK = 0;
+        // }
+    }
 });
