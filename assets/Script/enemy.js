@@ -107,6 +107,9 @@ cc.Class({
                     var label = this.node.getComponentInChildren(cc.Label);
                     label.string = common.ParseHP(this.hp);
                     common.SwitchEnemyColor(this);
+                    common.GainScore(Global.bulletATK);
+                } else {
+                    common.GainScore(Global.bulletATK + this.hp);
                 }
                 break;
             }
@@ -146,7 +149,13 @@ cc.Class({
             case 'ground':
                 {
                     if (selfCollider.body.linearVelocity.y < 600) {
-                        selfCollider.body.applyLinearImpulse(cc.v2(500 * this.weight, 2000 * this.weight), selfCollider.body.getWorldCenter(), true);
+                        selfCollider.body.applyLinearImpulse(cc.v2(0, 2000 * this.weight), selfCollider.body.getWorldCenter(), true);
+                    }
+                    // 每次默认都向中线推一下
+                    if (selfCollider.node.position.x < 0) {
+                        selfCollider.body.applyLinearImpulse(cc.v2(500 * this.weight, 0), selfCollider.body.getWorldCenter(), true);
+                    } else {
+                        selfCollider.body.applyLinearImpulse(cc.v2(-500 * this.weight, 0), selfCollider.body.getWorldCenter(), true);
                     }
                     // 撞到了地面
                     break;

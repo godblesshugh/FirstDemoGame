@@ -74,7 +74,7 @@ cc.Class({
             return;
         }
         let newNode = _getNewEnemy(this, level);
-        newNode.getComponent('enemy').init(1000 + parseInt(Math.random() * 1000), level);
+        newNode.getComponent('enemy').init(100 + parseInt(Math.random() * 10), level);
     },
     splitDown: function (position, baseHP, level) {
         // 数字是初始数字的一半，等级低一级，position 重合，给一个斜向上的冲量，向两边抛出
@@ -83,9 +83,9 @@ cc.Class({
             baseHP = Math.round(baseHP / 2);
             // TODO: 好像这里出现了 NaN 的情况？为啥
             let leftEnemy = _getNewEnemy(this, level);
-            leftEnemy.getComponent('enemy').init(baseHP, level, cc.v2(-1000, 3000), position);
+            leftEnemy.getComponent('enemy').init(baseHP, level, cc.v2(-2000, 3000), position);
             let rightEnemy = _getNewEnemy(this, level);
-            rightEnemy.getComponent('enemy').init(baseHP, level, cc.v2(1000, 3000), position);
+            rightEnemy.getComponent('enemy').init(baseHP, level, cc.v2(2000, 3000), position);
         }
     },
     getNewEnemyPosition: function (newNode) {

@@ -42,6 +42,11 @@ cc.Class({
 
         var area = cc.find('Canvas/background');
         common.init(area.width, area.height);
+        Global.scoreLabel = cc.find('Canvas/background/score').getComponent(cc.Label);
+        Global.bulletCountLabel = cc.find('Canvas/background/bulletCount/bulletCountLayout/bulletCountLabel').getComponent(cc.Label);
+        Global.bulletATKLabel = cc.find('Canvas/background/bulletATK/bulletATKLayout/bulletATKLabel').getComponent(cc.Label);
+        common.GainBulletCount(Global.bulletCount);
+        common.GainBulletATK(Global.bulletATK);
         this.eState = common.GameState.start;
         this.cannon.startAction();
         this.bulletGroup.startAction();
@@ -49,10 +54,11 @@ cc.Class({
     },
 
     btnClick: function (event, eventData) {
-        // if (Global.bulletATK === 0) {
-        //     Global.bulletATK = 201;
-        // } else {
-        //     Global.bulletATK = 0;
-        // }
+        if (Global.bulletCount === 20) {
+            Global.bulletCount = 1;
+        } else {
+            Global.bulletCount++;
+        }
+        common.GainBulletCount(Global.bulletCount, true);
     }
 });

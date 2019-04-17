@@ -12,6 +12,15 @@ cc.Class({
         this.bulletGroup = this.node.parent.getComponent('bulletGroup');
     },
 
+    init(position, linearVelocity) {
+        var rigidbody = this.node.getComponent(cc.RigidBody);
+        rigidbody.linearVelocity = linearVelocity;
+        this.linearVelocity = linearVelocity;
+        this.position = position;
+        this.__frameCount = 0;
+        this.__gapX = (this.position.x - this.node.position.x) / 2;
+    },
+
     onBeginContact: function (contact, selfCollider, otherCollider) {
         this.bulletGroup.bulletDestroy(selfCollider.node);
     },
@@ -21,14 +30,9 @@ cc.Class({
     },
 
     update(dt) {
-        // if (this.bulletGroup.eState !== common.GameState.start) {
-        //     return;
-        // }
-        // this.node.x += dt * this.xSpeed;
-        // this.node.y += dt * this.ySpeed;
-        // if (this.node.y > cc.view.getVisibleSize().height / 2 - 5) {
-        //     this.node.y = -cc.view.getVisibleSize().height;
-        //     this.bulletGroup.bulletDestroy(this.node);
-        // }
+        if (this.__frameCount <  2) {
+            this.__frameCount ++;
+            this.node.setPosition(cc.v2(this.node.position.x + this.__gapX, this.node.position.y));
+        }
     },
 });

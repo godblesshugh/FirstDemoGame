@@ -132,7 +132,8 @@ const ParseHP = (hp) => {
 
 const SwitchEnemyColor = (that) => {
     var remainHP = that.hp; // 敌人剩余 HP
-    var remainCount = parseInt(remainHP / Global.bulletATK); // 敌人剩余打击数量
+    var bullet = Global.bulletATK * Global.bulletCount;
+    var remainCount = parseInt(remainHP / bullet); // 敌人剩余打击数量
     var sprite = that.node.getComponent(cc.Sprite);
     if (remainCount < 3) {
         sprite.spriteFrame = that.sprArray[0];
@@ -146,7 +147,7 @@ const SwitchEnemyColor = (that) => {
         sprite.spriteFrame = that.sprArray[2];
         return;
     }
-    if (remainCount > 20) {
+    if (remainCount >= 15) {
         sprite.spriteFrame = that.sprArray[3];
         return;
     }
@@ -179,6 +180,30 @@ const CalculateBulletPosition = (margin, bulletWidth) => {
     return positions;
 };
 
+const GainScore = (num, set) => {
+    if (set) {
+        Global.scoreLabel.string = num;
+    } else {
+        Global.scoreLabel.string = parseInt(Global.scoreLabel.string) + num;
+    }
+};
+
+const GainBulletCount = (num, set) => {
+    if (set) {
+        Global.bulletCountLabel.string = num;
+    } else {
+        Global.bulletCountLabel.string = parseInt(Global.bulletCountLabel.string) + num;
+    }
+};
+
+const GainBulletATK = (num, set) => {
+    if (set) {
+        Global.bulletATKLabel.string = num;
+    } else {
+        Global.bulletATKLabel.string = parseInt(Global.bulletATKLabel.string) + num;
+    }
+};
+
 module.exports = {
     init: init,
     GameState: GameState,
@@ -192,5 +217,8 @@ module.exports = {
     ResetCoin: ResetNodeAction,
     ParseHP: ParseHP,
     SwitchEnemyColor: SwitchEnemyColor,
-    CalculateBulletPosition: CalculateBulletPosition
+    CalculateBulletPosition: CalculateBulletPosition,
+    GainScore: GainScore,
+    GainBulletCount: GainBulletCount,
+    GainBulletATK: GainBulletATK,
 };

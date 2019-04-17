@@ -48,29 +48,21 @@ cc.Class({
     getNewBullet: function (bulletInfo) {
         var objName = bulletInfo.name;
         // 一共支持并排5发子弹
-        // for (var i = 0; i < bulletInfo.position.length; i++) {
-        //     var newNode = common.PopPool(this, objName, bulletInfo.prefab, this.node);
-        //     var newV2 = this.getBulletPosition(bulletInfo.position[i]);
-        //     newNode.setPosition(newV2);
-        //     newNode.getComponent('bullet').bulletGroup = this;
-        //     var rigidbody = newNode.getComponent(cc.RigidBody);
-        //     rigidbody.linearVelocity = cc.v2(0, 1500);
-        // }
         var positions = common.CalculateBulletPosition(this.bulletInfinite.margin, this.bulletInfinite.bulletWidth);
+        var position = this.cannon.getPosition();
+        position.y += 74.5; // 从炮台口发射
         for (let i = 0; i < Global.bulletCount; i++) {
             var newNode = common.PopPool(this, objName, bulletInfo.prefab, this.node);
-            var newV2 = this.getBulletPosition(positions[i]);
-            newNode.setPosition(newV2);
+            newNode.setPosition(position);
             newNode.getComponent('bullet').bulletGroup = this;
-            var rigidbody = newNode.getComponent(cc.RigidBody);
-            rigidbody.linearVelocity = cc.v2(0, 1500);
+            newNode.getComponent('bullet').init(cc.v2(positions[i].x + position.x, positions[i].y + position.y), cc.v2(0, 1500)); // 根据炮台修正坐标
         }
     },
 
     getBulletPosition: function (posInfo) {
         var position = this.cannon.getPosition();
         var v2_x = position.x + posInfo.x;
-        var v2_y = position.y + posInfo.y;
+        var v2_y = position.y + posInfo.y + 74.5; // 从炮台口发射
         return cc.v2(v2_x, v2_y);
     },
 
