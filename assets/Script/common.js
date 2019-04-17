@@ -90,6 +90,7 @@ const TimeFmt = (time, fmt) => { //author: meizz
 // 重置节点和刚体的运动状态
 const ResetNodeAction = (node) => {
     node.stopAllActions();
+    node.setPosition(cc.v2(-1000, -1000));
     var rigidbody = node.getComponent(cc.RigidBody);
     rigidbody.linearVelocity = cc.v2(0, 0);
     rigidbody.angularVelocity = 0;
@@ -129,7 +130,7 @@ const ParseHP = (hp) => {
     return str;
 };
 
-const switchEnemyColor = (that) => {
+const SwitchEnemyColor = (that) => {
     var remainHP = that.hp; // 敌人剩余 HP
     var remainCount = parseInt(remainHP / Global.bulletATK); // 敌人剩余打击数量
     var sprite = that.node.getComponent(cc.Sprite);
@@ -152,6 +153,32 @@ const switchEnemyColor = (that) => {
     return false;
 };
 
+const CalculateBulletPosition = (margin, bulletWidth) => {
+    if (Global.bulletPosition.length === Global.bulletCount) {
+        return Global.bulletPosition;
+    }
+    // 计算子弹坐标
+    var positions = [];
+    var odd = Global.bulletCount % 2 === 0 ? false : true; // 子弹数是奇数还是偶数
+    let leftPosition = 0;
+    if (odd) {
+        // 如果是奇数，那有一颗子弹是在中心位置，同时保持其他子弹的间距
+        // 最左侧的子弹位置是：
+        leftPosition = -parseInt(Global.bulletCount / 2) * (margin + bulletWidth);
+    } else {
+        leftPosition = -(Global.bulletCount / 2 - 0.5) * (margin + bulletWidth);
+    }
+    for (let i = 0; i < Global.bulletCount; i++) {
+        positions.push({
+            x: leftPosition,
+            y: 0,
+        });
+        leftPosition += (margin + bulletWidth);
+    }
+    Global.bulletPosition = positions;
+    return positions;
+};
+
 module.exports = {
     init: init,
     GameState: GameState,
@@ -164,5 +191,6 @@ module.exports = {
     ResetEnemy: ResetNodeAction,
     ResetCoin: ResetNodeAction,
     ParseHP: ParseHP,
-    switchEnemyColor: switchEnemyColor,
+    SwitchEnemyColor: SwitchEnemyColor,
+    CalculateBulletPosition: CalculateBulletPosition
 };
