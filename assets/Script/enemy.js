@@ -56,7 +56,7 @@ cc.Class({
         // var mass = rigidbody.getMass();
         // this.weight = Math.ceil(mass / 10);
         this.weight = this.level + 1;
-        common.switchEnemyColor(this);
+        common.SwitchEnemyColor(this);
         if (position) {
             // 传进来了坐标，意思是需要分裂了
             splitEnter(this, position, linearImpulse);
@@ -85,6 +85,17 @@ cc.Class({
             this.enemyGroup.enemyDestroy(this.node);
             return;
         }
+        if (this.hp <= 0) {
+            let position = this.node.position;
+            let baseHP = this.baseHP;
+            let level = this.level;
+            let linearVelocity = this.node.getComponent(cc.RigidBody).linearVelocity;
+            // position, baseHP, level
+            this.enemyGroup.splitDown(position, baseHP, level);
+            this.enemyGroup.produceCoins(level, position, linearVelocity);
+            this.enemyGroup.produceBoom(level, position);
+            this.enemyGroup.enemyDestroy(this.node);
+        }
     },
 
     // 只在两个碰撞体开始接触时被调用一次
@@ -92,20 +103,11 @@ cc.Class({
         switch (otherCollider.node.name) {
             case 'bullet': {
                 this.hp -= Global.bulletATK;
-                if (this.hp <= 0) {
-                    let position = this.node.position;
-                    let baseHP = this.baseHP;
-                    let level = this.level;
-                    let linearVelocity = this.node.getComponent(cc.RigidBody).linearVelocity;
-                    // position, baseHP, level
-                    this.enemyGroup.splitDown(position, baseHP, level);
-                    this.enemyGroup.produceCoins(level, position, linearVelocity);
-                    this.enemyGroup.produceBoom(level, position);
-                    this.enemyGroup.enemyDestroy(this.node);
+                if (this.hp > 0) {
+                    var label = this.node.getComponentInChildren(cc.Label);
+                    label.string = common.ParseHP(this.hp);
+                    common.SwitchEnemyColor(this);
                 }
-                var label = this.node.getComponentInChildren(cc.Label);
-                label.string = common.ParseHP(this.hp);
-                common.switchEnemyColor(this);
                 break;
             }
             case 'leftWall': {
